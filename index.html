@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة العمر الدقيقة</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Tajawal:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Confetti Script -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- html2canvas for Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container glassmorphism">
+        <header>
+            <div class="theme-switcher">
+                <button class="theme-btn active" data-theme="default" title="الوضع الليلي / Dark Mode">🌙</button>
+                <button class="theme-btn" data-theme="light" title="الوضع المضيء / Light Mode">☀️</button>
+                <button id="lang-btn" class="theme-btn" title="English / عربي"
+                    style="width:auto; padding:0 1rem; border-radius:20px; font-weight:bold; font-size:1rem;">EN</button>
+            </div>
+            <h1><i class="fa-solid fa-hourglass-half"></i> <span data-i18n="title">حاسبة العمر الشاملة</span></h1>
+            <p data-i18n="subtitle">اكتشف تفاصيل دقيقة عن عمرك</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <label for="birthdate" data-i18n="enter_birthdate">أدخل تاريخ ميلادك:</label>
+                <!-- lang="en-GB" and dir="ltr" ensure that day/month/year renders properly in English format to fix the reversed text issue -->
+                <input type="date" id="birthdate" max="" lang="en-GB" dir="ltr">
+            </div>
+
+            <div id="results" class="results-section hidden">
+                <div class="result-card primary-card">
+                    <h3><i class="fa-solid fa-cake-candles"></i> <span data-i18n="your_age_now">عمرك الان</span> <span
+                            id="res-generation" class="badge"></span></h3>
+                    <div class="age-exact">
+                        <div class="age-box">
+                            <span id="res-years" class="number">0</span>
+                            <span class="label" data-i18n="years_label">year</span>
+                        </div>
+                        <div class="age-box">
+                            <span id="res-months" class="number">0</span>
+                            <span class="label" data-i18n="months_label">month</span>
+                        </div>
+                        <div class="age-box">
+                            <span id="res-days" class="number">0</span>
+                            <span class="label" data-i18n="days_label">day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Features Section -->
+                <div class="result-card astrology-card">
+                    <h4><i class="fa-solid fa-star"></i> <span data-i18n="astro_title">اكتشف أسرار شخصيتك</span></h4>
+                    <div class="astrology-grid">
+                        <div class="astro-item">
+                            <span class="astro-icon" id="zodiac-icon">✨</span>
+                            <span class="astro-label" data-i18n="zodiac">البرج الفلكي</span>
+                            <span class="astro-value" id="res-zodiac">-</span>
+                        </div>
+                        <div class="astro-item">
+                            <span class="astro-icon" id="chinese-icon">🐲</span>
+                            <span class="astro-label" data-i18n="chinese_zodiac">البرج الصيني</span>
+                            <span class="astro-value" id="res-chinese-zodiac">-</span>
+                        </div>
+                        <div class="astro-item">
+                            <span class="astro-icon">💎</span>
+                            <span class="astro-label" data-i18n="birthstone">حجر الميلاد</span>
+                            <span class="astro-value" id="res-birthstone">-</span>
+                        </div>
+                        <div class="astro-item">
+                            <span class="astro-icon">🌸</span>
+                            <span class="astro-label" data-i18n="birth_flower">زهرة الميلاد</span>
+                            <span class="astro-value" id="res-flower">-</span>
+                        </div>
+                        <div class="astro-item">
+                            <span class="astro-icon" id="moon-icon">🌑</span>
+                            <span class="astro-label" data-i18n="moon_phase">شكل القمر</span>
+                            <span class="astro-value" id="res-moon">محاق</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-results">
+                    <div class="result-card">
+                        <h4><i class="fa-solid fa-calendar-day"></i> <span data-i18n="total_days_title">إجمالي
+                                الأيام</span></h4>
+                        <p id="res-total-days" class="value">0</p>
+                        <span class="subtext" data-i18n="days_since_birth">يوم منذ ولادتك</span>
+                    </div>
+
+                    <div class="result-card">
+                        <h4><i class="fa-solid fa-moon"></i> <span data-i18n="hijri_age">العمر بالهجري</span></h4>
+                        <p id="res-hijri-age" class="value">0</p>
+                        <span class="subtext" data-i18n="hijri_years_approx">سنة هجرية تقريباً</span>
+                    </div>
+
+                    <div class="result-card">
+                        <h4><i class="fa-solid fa-baby"></i> <span data-i18n="birth_day_name">يوم ولادتك</span></h4>
+                        <p id="res-birth-day-name" class="value">-</p>
+                    </div>
+
+                    <div class="result-card">
+                        <h4><i class="fa-solid fa-calendar-check"></i> <span data-i18n="next_birthday">عيد ميلادك
+                                القادم</span></h4>
+                        <p id="res-next-birthday-day" class="value">-</p>
+                        <span class="subtext" data-i18n="day_in_coming_weeks">يوم في الأسابيع القادمة</span>
+                    </div>
+                </div>
+
+                <div class="result-card countdown-card">
+                    <h4><i class="fa-solid fa-stopwatch"></i> <span data-i18n="countdown_title">باقي على عيد
+                            ميلادك</span></h4>
+                    <div class="countdown">
+                        <div class="time-box"><span id="cd-months">0</span>
+                            <div data-i18n="month">شهر</div>
+                        </div>
+                        <div class="time-box"><span id="cd-days">0</span>
+                            <div data-i18n="day">يوم</div>
+                        </div>
+                        <div class="time-box"><span id="cd-hours">0</span>
+                            <div data-i18n="hour">ساعة</div>
+                        </div>
+                        <div class="time-box"><span id="cd-minutes">0</span>
+                            <div data-i18n="minute">دقيقة</div>
+                        </div>
+                        <div class="time-box"><span id="cd-seconds">0</span>
+                            <div data-i18n="second">ثانية</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card lived-time-card">
+                    <h4><i class="fa-solid fa-heart-pulse"></i> <span data-i18n="lived_time_title">عشت حتى الآن</span>
+                    </h4>
+                    <div class="lived-time">
+                        <div class="live-item">
+                            <span id="live-hours" class="live-val">0</span>
+                            <span class="live-label" data-i18n="hour">ساعة</span>
+                        </div>
+                        <div class="live-item">
+                            <span id="live-minutes" class="live-val">0</span>
+                            <span class="live-label" data-i18n="minute">دقيقة</span>
+                        </div>
+                        <div class="live-item">
+                            <span id="live-seconds" class="live-val">0</span>
+                            <span class="live-label" data-i18n="second">ثانية</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body Stats Card -->
+                <div class="result-card body-stats-card">
+                    <h4><i class="fa-solid fa-notes-medical"></i> <span data-i18n="body_stats_title">إحصائيات جسدك
+                            التقديرية</span></h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-heart-pulse stat-icon heart"></i>
+                            <span class="stat-val" id="stat-hearts">0</span>
+                            <span class="stat-label" data-i18n="heartbeats">نبضة قلب</span>
+                            <span class="stat-desc" data-i18n="heart_avg"
+                                style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:5px;">بمتوسط
+                                70 نبضة في الدقيقة</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-lungs stat-icon lungs"></i>
+                            <span class="stat-val" id="stat-breaths">0</span>
+                            <span class="stat-label" data-i18n="breaths">نَفَس</span>
+                            <span class="stat-desc" data-i18n="breath_avg"
+                                style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:5px;">بمتوسط
+                                16 نَفَس في الدقيقة</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-bed stat-icon bed"></i>
+                            <span class="stat-val" id="stat-sleep">0</span>
+                            <span class="stat-label" data-i18n="sleep_hours">ساعة نوم</span>
+                            <span class="stat-desc" data-i18n="sleep_avg"
+                                style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:5px;">بمتوسط
+                                8 ساعات يومياً</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fun Milestones -->
+                <div class="result-card milestone-card">
+                    <h4><i class="fa-solid fa-trophy"></i> <span data-i18n="future_milestones">محطات قادمة في
+                            حياتك</span></h4>
+                    <div id="milestones-container" class="milestones-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <button id="btn-share" class="share-btn">
+                    <i class="fa-solid fa-camera"></i> <span data-i18n="share_btn">حفظ الشاشة للمشاركة</span>
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p><span data-i18n="by">بواسطة</span> <span class="creator" data-i18n="creator_name">المهندس أشروووف</span>
+                &copy; 2026</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
