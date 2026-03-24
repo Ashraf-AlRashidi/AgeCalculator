@@ -143,8 +143,7 @@ open index.html
 ```
 Settings → Pages → Deploy from branch → main → Save
 ```
-ثم افتح: `https://ashrooooof.github.io/age-calculator`
-
+ثم افتح: https://ashraf-alrashidi.github.io/AgeCalculator
 ---
 
 ### 🤝 المساهمة
@@ -268,8 +267,7 @@ open index.html
 ```
 Settings → Pages → Deploy from branch → main → Save
 ```
-Then visit: `https://ashrooooof.github.io/age-calculator`
-
+Then visit: https://ashraf-alrashidi.github.io/AgeCalculator
 ---
 
 ### 🤝 Contributing
